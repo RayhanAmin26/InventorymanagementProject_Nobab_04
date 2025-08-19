@@ -6,196 +6,204 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="assets/style.css">
   <style>
-    .page-container { display: flex; flex-direction: column; min-height: 100vh; }
-    .flex-grow-1 { flex: 1; }
-    .footer-box { background: #212529; color: #ffc107; text-align: center; padding: 10px; font-weight: bold; }
-    .btn-custom { border-radius: 5px; }
+    .site-footer{
+      background:#23272b;
+      color:#f3b200;
+      text-align:center;
+      font-weight:600;
+      padding:12px 16px;
+      border-top:1px solid rgba(255,255,255,.08);
+    }
+    .site-footer a{ color:#f3b200; text-decoration:none; }
+    .site-footer a:hover{ text-decoration:underline; }
+    html, body { height:100%; margin:0; }
+    body{ min-height:100vh; display:flex; flex-direction:column; }
+    main{ flex:1; }
   </style>
 </head>
 <body>
-  <div class="page-container">
 
-    <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-success shadow">
-      <div class="container-fluid">
-        <a class="navbar-brand fw-bold" href="index.html">🌾 Agri Inventory</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-          <ul class="navbar-nav ms-auto">
-            <li class="nav-item"><a class="nav-link" href="index.html">Dashboard</a></li>
-            <li class="nav-item"><a class="nav-link" href="agricultural_products.html">Agricultural Products</a></li>
-            <li class="nav-item"><a class="nav-link" href="harvested_crops.html">Harvested Crops</a></li>
-            <li class="nav-item"><a class="nav-link" href="perishable_products.html">Perishable Products</a></li>
-            <li class="nav-item"><a class="nav-link" href="inventory.html">Inventory</a></li>
-            <li class="nav-item"><a class="nav-link active" href="post_harvest.html">Post-Harvest Monitoring</a></li>
-            <li class="nav-item"><a class="nav-link" href="storage_condition.html">Storage Condition</a></li>
-
-          </ul>
-        </div>
-      </div>
-    </nav>
-
-    <!-- Main Content -->
-    <div class="flex-grow-1">
-      <div class="container mt-4 section-card">
-        <h2 class="section-title">📊 Post-Harvest Monitoring</h2>
-
-        <!-- Search + Add -->
-        <div class="d-flex justify-content-between mb-3">
-          <input type="text" id="searchInput" class="form-control w-25" placeholder="Search...">
-          <button class="btn btn-success btn-custom" data-bs-toggle="modal" data-bs-target="#addModal">+ Add New</button>
-        </div>
-
-        <!-- Table -->
-        <div class="table-responsive">
-          <table class="table table-bordered table-hover">
-            <thead>
-              <tr class="table-success">
-                <th>Product ID</th>
-                <th>Product Name</th>
-                <th>Category</th>
-                <th>Batch Number</th>
-                <th>Expiry Date</th>
-                <th>Storage Condition</th>
-                <th>Location</th>
-                <th>Quantity</th>
-                <th>Stock Level Status</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>P100</td>
-                <td>Tomato</td>
-                <td>Vegetable</td>
-                <td>B-001</td>
-                <td>2025-08-25</td>
-                <td>Cold Storage</td>
-                <td>Warehouse A</td>
-                <td>250 kg</td>
-                <td>Medium</td>
-                <td>
-                  <button class="btn btn-warning btn-sm btn-custom" data-bs-toggle="modal" data-bs-target="#editModal">Edit</button>
-                  <button class="btn btn-danger btn-sm btn-custom">Delete</button>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-success shadow">
+  <div class="container-fluid">
+    <a class="navbar-brand fw-bold" href="index.html">🌾 Agri Inventory</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item"><a class="nav-link" href="agricultural_products.html">Agricultural Products</a></li>
+        <li class="nav-item"><a class="nav-link" href="harvested_crops.html">Harvested Crops</a></li>
+        <li class="nav-item"><a class="nav-link" href="perishable_products.html">Perishable Products</a></li>
+        <li class="nav-item"><a class="nav-link" href="inventory.html">Inventory</a></li>
+        <li class="nav-item"><a class="nav-link active" href="post_harvest.html">Post-Harvest Monitoring</a></li>
+        <li class="nav-item"><a class="nav-link" href="storage_condition.html">Storage Condition</a></li>
+      </ul>
     </div>
+  </div>
+</nav>
 
-    <!-- Footer -->
-    <footer class="footer-box">
-      © 2025 Agri Inventory Management | Developed By Nobab_Ultron
-    </footer>
+<!-- Main Content -->
+<main class="container mt-4 section-card">
+  <h2 class="section-title">📊 Post-Harvest Monitoring</h2>
 
-  </div> <!-- End Page Container -->
+  <!-- Add Button -->
+  <div class="d-flex justify-content-end mb-3">
+    <button class="btn btn-success btn-custom" data-bs-toggle="modal" data-bs-target="#addModal">+ Add New</button>
+  </div>
 
-  <!-- Add Modal -->
-  <div class="modal fade" id="addModal" tabindex="-1">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header bg-success text-white">
-          <h5 class="modal-title">Add Post-Harvest Record</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-        </div>
-        <div class="modal-body">
-          <form>
-            <input class="form-control mb-2" placeholder="Product ID">
-            <input class="form-control mb-2" placeholder="Product Name">
-            <input class="form-control mb-2" placeholder="Category">
-            <input class="form-control mb-2" placeholder="Batch Number">
-            <input type="date" class="form-control mb-2">
-            <input class="form-control mb-2" placeholder="Storage Condition">
-            <input class="form-control mb-2" placeholder="Location">
-            <input class="form-control mb-2" placeholder="Quantity">
-            <input class="form-control mb-2" placeholder="Stock Level Status">
-          </form>
-        </div>
-        <div class="modal-footer">
-          <button class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-          <button class="btn btn-success">Save</button>
-        </div>
+  <!-- Table -->
+  <div class="table-responsive">
+    <table class="table table-bordered table-hover">
+      <thead>
+        <tr class="table-success">
+          <th>ID</th>
+          <th>Monitor Date</th>
+          <th>Temperature</th>
+          <th>Humidity</th>
+          <th>Notes</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody id="postharvestTable"></tbody>
+    </table>
+  </div>
+</main>
+
+<!-- Footer -->
+<footer class="site-footer">
+  <p>© <span id="year"></span> Agri Inventory Management | Developed By 
+    <a href="#">Nobab_Ultron</a>
+  </p>
+</footer>
+
+<!-- Add Modal -->
+<div class="modal fade" id="addModal" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header bg-success text-white">
+        <h5 class="modal-title">Add Post-Harvest Record</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <form id="addForm">
+          <input type="date" name="monitor_date" class="form-control mb-2" required>
+          <input type="text" name="temperature" class="form-control mb-2" placeholder="Temperature">
+          <input type="text" name="humidity" class="form-control mb-2" placeholder="Humidity">
+          <textarea name="notes" class="form-control mb-2" placeholder="Notes"></textarea>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button class="btn btn-success" onclick="addPostharvest()">Save</button>
       </div>
     </div>
   </div>
+</div>
 
-  <!-- Edit Modal -->
-  <div class="modal fade" id="editModal" tabindex="-1">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header bg-warning text-dark">
-          <h5 class="modal-title">Edit Post-Harvest Record</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-        </div>
-        <div class="modal-body">
-          <form>
-            <input class="form-control mb-2" placeholder="Product ID">
-            <input class="form-control mb-2" placeholder="Product Name">
-            <input class="form-control mb-2" placeholder="Category">
-            <input class="form-control mb-2" placeholder="Batch Number">
-            <input type="date" class="form-control mb-2">
-            <input class="form-control mb-2" placeholder="Storage Condition">
-            <input class="form-control mb-2" placeholder="Location">
-            <input class="form-control mb-2" placeholder="Quantity">
-            <input class="form-control mb-2" placeholder="Stock Level Status">
-          </form>
-        </div>
-        <div class="modal-footer">
-          <button class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-          <button class="btn btn-warning">Update</button>
-        </div>
+<!-- Edit Modal -->
+<div class="modal fade" id="editModal" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header bg-warning text-dark">
+        <h5 class="modal-title">Edit Post-Harvest Record</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <form id="editForm">
+          <input type="hidden" name="id">
+          <input type="date" name="monitor_date" class="form-control mb-2" required>
+          <input type="text" name="temperature" class="form-control mb-2" placeholder="Temperature">
+          <input type="text" name="humidity" class="form-control mb-2" placeholder="Humidity">
+          <textarea name="notes" class="form-control mb-2" placeholder="Notes"></textarea>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button class="btn btn-warning" onclick="updatePostharvest()">Update</button>
       </div>
     </div>
   </div>
+</div>
 
-  <!-- Scripts -->
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-  <script>
-    // Auto-fill Edit Modal
-    document.querySelectorAll(".btn-warning").forEach((btn) => {
-      btn.addEventListener("click", function () {
-        let row = this.closest("tr");
-        let cells = row.querySelectorAll("td");
-        let modal = document.getElementById("editModal");
-        let inputs = modal.querySelectorAll("input");
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+const API_URL = "http://localhost/agri_inventory/backend/postharvest.php";
+const tableBody = document.getElementById("postharvestTable");
 
-        // Mapping table cells → form inputs
-        inputs[0].value = cells[0].innerText; // Product ID
-        inputs[1].value = cells[1].innerText; // Product Name
-        inputs[2].value = cells[2].innerText; // Category
-        inputs[3].value = cells[3].innerText; // Batch Number
-        inputs[4].value = cells[4].innerText; // Expiry Date
-        inputs[5].value = cells[5].innerText; // Storage Condition
-        inputs[6].value = cells[6].innerText; // Location
-        inputs[7].value = cells[7].innerText; // Quantity
-        inputs[8].value = cells[8].innerText; // Stock Level Status
-      });
-    });
+// Load records
+async function loadPostharvest() {
+  const res = await fetch(API_URL);
+  const data = await res.json();
+  tableBody.innerHTML = "";
+  data.forEach(r => {
+    let row = `
+      <tr>
+        <td>${r.id}</td>
+        <td>${r.monitor_date||""}</td>
+        <td>${r.temperature||""}</td>
+        <td>${r.humidity||""}</td>
+        <td>${r.notes||""}</td>
+        <td>
+          <button class="btn btn-warning btn-sm" onclick='openEdit(${JSON.stringify(r)})'>Edit</button>
+          <button class="btn btn-danger btn-sm" onclick="deletePostharvest(${r.id})">Delete</button>
+        </td>
+      </tr>`;
+    tableBody.innerHTML += row;
+  });
+}
 
-    // Delete button
-    document.querySelectorAll('.btn-danger').forEach(btn => {
-      btn.addEventListener('click', function() {
-        if(confirm('Are you sure you want to delete this item?')) {
-          this.closest('tr').remove();
-        }
-      });
-    });
+// Add record
+async function addPostharvest() {
+  const form = document.getElementById("addForm");
+  const formData = Object.fromEntries(new FormData(form).entries());
+  await fetch(API_URL, {
+    method: "POST",
+    headers: {"Content-Type":"application/json"},
+    body: JSON.stringify(formData)
+  });
+  form.reset();
+  bootstrap.Modal.getInstance(document.getElementById('addModal')).hide();
+  loadPostharvest();
+}
 
-    // Search Filter
-    const searchInput = document.getElementById('searchInput');
-    searchInput.addEventListener('keyup', function() {
-      const filter = this.value.toLowerCase();
-      const rows = document.querySelectorAll('tbody tr');
-      rows.forEach(row => {
-        row.style.display = [...row.cells].some(cell =>
-          cell.textContent.toLowerCase().includes(filter)
-        ) ? '' : 'none';
-      });
-    });
-  </script>
+// Open edit modal
+function openEdit(r) {
+  const form = document.getElementById("editForm");
+  form.id.value = r.id;
+  form.monitor_date.value = r.monitor_date ? r.monitor_date.substring(0,10) : "";
+  form.temperature.value = r.temperature;
+  form.humidity.value = r.humidity;
+  form.notes.value = r.notes;
+  new bootstrap.Modal(document.getElementById('editModal')).show();
+}
+
+// Update record
+async function updatePostharvest() {
+  const form = document.getElementById("editForm");
+  const formData = Object.fromEntries(new FormData(form).entries());
+  await fetch(API_URL+"?id="+formData.id, {
+    method: "PUT",
+    headers: {"Content-Type":"application/json"},
+    body: JSON.stringify(formData)
+  });
+  bootstrap.Modal.getInstance(document.getElementById('editModal')).hide();
+  loadPostharvest();
+}
+
+// Delete record
+async function deletePostharvest(id) {
+  if(!confirm("Delete this record?")) return;
+  await fetch(API_URL+"?id="+id, { method:"DELETE" });
+  loadPostharvest();
+}
+
+// Auto year in footer
+document.addEventListener("DOMContentLoaded", ()=>{
+  const y=document.getElementById('year');
+  if(y) y.textContent=new Date().getFullYear();
+  loadPostharvest();
+});
+</script>
 </body>
 </html>
