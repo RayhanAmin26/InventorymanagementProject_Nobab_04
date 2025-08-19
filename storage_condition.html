@@ -6,24 +6,10 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="assets/style.css">
   <style>
-    .page-container {
-      display: flex;
-      flex-direction: column;
-      min-height: 100vh;
-    }
-    .flex-grow-1 {
-      flex: 1;
-    }
-    .footer-box {
-      background: #212529;
-      color: #ffc107;
-      text-align: center;
-      padding: 10px;
-      font-weight: bold;
-    }
-    .btn-custom {
-      border-radius: 5px;
-    }
+    .page-container { display: flex; flex-direction: column; min-height: 100vh; }
+    .flex-grow-1 { flex: 1; }
+    .footer-box { background: #212529; color: #ffc107; text-align: center; padding: 10px; font-weight: bold; }
+    .btn-custom { border-radius: 5px; }
   </style>
 </head>
 <body>
@@ -55,9 +41,8 @@
       <div class="container mt-4 section-card">
         <h2 class="section-title">🏬 Storage Condition</h2>
 
-        <!-- Search + Add -->
-        <div class="d-flex justify-content-between mb-3">
-          <input type="text" id="searchInput" class="form-control w-25" placeholder="Search...">
+        <!-- Add Button -->
+        <div class="d-flex justify-content-end mb-3">
           <button class="btn btn-success btn-custom" data-bs-toggle="modal" data-bs-target="#addModal">+ Add New</button>
         </div>
 
@@ -66,6 +51,7 @@
           <table class="table table-bordered table-hover">
             <thead>
               <tr class="table-success">
+                <th>ID</th>
                 <th>Warehouse ID</th>
                 <th>Location</th>
                 <th>Temperature</th>
@@ -73,18 +59,7 @@
                 <th>Actions</th>
               </tr>
             </thead>
-            <tbody>
-              <tr>
-                <td>W001</td>
-                <td>Dhaka</td>
-                <td>25°C</td>
-                <td>65%</td>
-                <td>
-                  <button class="btn btn-warning btn-sm btn-custom" data-bs-toggle="modal" data-bs-target="#editModal">Edit</button>
-                  <button class="btn btn-danger btn-sm btn-custom">Delete</button>
-                </td>
-              </tr>
-            </tbody>
+            <tbody id="storageTable"></tbody>
           </table>
         </div>
       </div>
@@ -92,7 +67,7 @@
 
     <!-- Footer -->
     <footer class="footer-box">
-      © 2025 Agri Inventory Management | Developed By Nobab_Ultron
+      © <span id="year"></span> Agri Inventory Management | Developed By Nobab_Ultron
     </footer>
   </div>
 
@@ -105,16 +80,16 @@
           <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
         </div>
         <div class="modal-body">
-          <form>
-            <input class="form-control mb-2" placeholder="Warehouse ID">
-            <input class="form-control mb-2" placeholder="Location">
-            <input class="form-control mb-2" placeholder="Temperature">
-            <input class="form-control mb-2" placeholder="Humidity">
+          <form id="addForm">
+            <input name="warehouse_id" class="form-control mb-2" placeholder="Warehouse ID">
+            <input name="location" class="form-control mb-2" placeholder="Location">
+            <input name="temperature" class="form-control mb-2" placeholder="Temperature">
+            <input name="humidity" class="form-control mb-2" placeholder="Humidity">
           </form>
         </div>
         <div class="modal-footer">
           <button class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-          <button class="btn btn-success">Save</button>
+          <button class="btn btn-success" onclick="addStorage()">Save</button>
         </div>
       </div>
     </div>
@@ -129,16 +104,17 @@
           <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
         </div>
         <div class="modal-body">
-          <form>
-            <input class="form-control mb-2" placeholder="Warehouse ID">
-            <input class="form-control mb-2" placeholder="Location">
-            <input class="form-control mb-2" placeholder="Temperature">
-            <input class="form-control mb-2" placeholder="Humidity">
+          <form id="editForm">
+            <input type="hidden" name="id">
+            <input name="warehouse_id" class="form-control mb-2" placeholder="Warehouse ID">
+            <input name="location" class="form-control mb-2" placeholder="Location">
+            <input name="temperature" class="form-control mb-2" placeholder="Temperature">
+            <input name="humidity" class="form-control mb-2" placeholder="Humidity">
           </form>
         </div>
         <div class="modal-footer">
           <button class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-          <button class="btn btn-warning">Update</button>
+          <button class="btn btn-warning" onclick="updateStorage()">Update</button>
         </div>
       </div>
     </div>
@@ -147,41 +123,80 @@
   <!-- Scripts -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
   <script>
-    // Auto-fill Edit Modal
-    document.querySelectorAll(".btn-warning").forEach((btn) => {
-      btn.addEventListener("click", function () {
-        let row = this.closest("tr");
-        let cells = row.querySelectorAll("td");
+    const API_URL = "http://localhost/agri_inventory/backend/storage.php";
+    const tableBody = document.getElementById("storageTable");
 
-        let modal = document.getElementById("editModal");
-        let inputs = modal.querySelectorAll("input");
-
-        inputs[0].value = cells[0].innerText; // Warehouse ID
-        inputs[1].value = cells[1].innerText; // Location
-        inputs[2].value = cells[2].innerText; // Temperature
-        inputs[3].value = cells[3].innerText; // Humidity
+    // Load storage data
+    async function loadStorage() {
+      const res = await fetch(API_URL);
+      const data = await res.json();
+      tableBody.innerHTML = "";
+      data.forEach(s => {
+        let row = `
+          <tr>
+            <td>${s.id}</td>
+            <td>${s.warehouse_id}</td>
+            <td>${s.location}</td>
+            <td>${s.temperature}</td>
+            <td>${s.humidity}</td>
+            <td>
+              <button class="btn btn-warning btn-sm" onclick='openEdit(${JSON.stringify(s)})'>Edit</button>
+              <button class="btn btn-danger btn-sm" onclick="deleteStorage(${s.id})">Delete</button>
+            </td>
+          </tr>`;
+        tableBody.innerHTML += row;
       });
-    });
+    }
 
-    // Delete button
-    document.querySelectorAll('.btn-danger').forEach(btn => {
-      btn.addEventListener('click', function() {
-        if(confirm('Are you sure you want to delete this item?')) {
-          this.closest('tr').remove();
-        }
+    // Add storage
+    async function addStorage() {
+      const form = document.getElementById("addForm");
+      const formData = Object.fromEntries(new FormData(form).entries());
+      await fetch(API_URL, {
+        method: "POST",
+        headers: {"Content-Type":"application/json"},
+        body: JSON.stringify(formData)
       });
-    });
+      form.reset();
+      bootstrap.Modal.getInstance(document.getElementById('addModal')).hide();
+      loadStorage();
+    }
 
-    // Search Filter
-    const searchInput = document.getElementById('searchInput');
-    searchInput.addEventListener('keyup', function() {
-      const filter = this.value.toLowerCase();
-      const rows = document.querySelectorAll('tbody tr');
-      rows.forEach(row => {
-        row.style.display = [...row.cells].some(cell =>
-          cell.textContent.toLowerCase().includes(filter)
-        ) ? '' : 'none';
+    // Open edit modal
+    function openEdit(s) {
+      const form = document.getElementById("editForm");
+      form.id.value = s.id;
+      form.warehouse_id.value = s.warehouse_id;
+      form.location.value = s.location;
+      form.temperature.value = s.temperature;
+      form.humidity.value = s.humidity;
+      new bootstrap.Modal(document.getElementById('editModal')).show();
+    }
+
+    // Update storage
+    async function updateStorage() {
+      const form = document.getElementById("editForm");
+      const formData = Object.fromEntries(new FormData(form).entries());
+      await fetch(API_URL+"?id="+formData.id, {
+        method: "PUT",
+        headers: {"Content-Type":"application/json"},
+        body: JSON.stringify(formData)
       });
+      bootstrap.Modal.getInstance(document.getElementById('editModal')).hide();
+      loadStorage();
+    }
+
+    // Delete storage
+    async function deleteStorage(id) {
+      if(!confirm("Delete this record?")) return;
+      await fetch(API_URL+"?id="+id, { method:"DELETE" });
+      loadStorage();
+    }
+
+    // Auto year + initial load
+    document.addEventListener("DOMContentLoaded", ()=>{
+      document.getElementById('year').textContent = new Date().getFullYear();
+      loadStorage();
     });
   </script>
 </body>
